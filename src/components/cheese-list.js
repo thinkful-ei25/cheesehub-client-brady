@@ -1,46 +1,33 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import {fetchCheeses} from '../actions/cheese';
 
+export class CheeseList extends React.Component {
+  componentDidMount() {
+    this.props.dispatch(fetchCheeses(this.props.dispatch));
+  }
 
+  render() {
+    const cheeses = this.props.cheeses.map((cheese, index) => {
+      return <li key={index}>{cheese}</li>;
+    });
 
-export default class CheeseList extends React.Component {
-
-
-render() {
-  const cheeses = this.props.cheeses.map((cheese, index) => {
-    return (<li key={index}>
-      {cheese}
-    </li>)
-  });
-
-  return (
-    <div>
-      <ul>
-        {cheeses}      
-      </ul>
-    </div>
-  )
+    return (
+      <div>
+        <ul>{cheeses}</ul>
+      </div>
+    );
   }
 }
 
+CheeseList.defaultProps = {
+  cheeses: []
+};
 
-// CheeseList.defaultProps = {
-//   cheeses: [
-//     'Bath Blue',
-//     'Barkham Blue',
-//     'Buxton Blue',
-//     'Cheshire Blue',
-//     'Devon Blue',
-//     'Dorset Blue Vinney',
-//     'Dovedale',
-//     'Exmoor Blue',
-//     'Harbourne Blue',
-//     'Lanark Blue',
-//     'Lymeswold',
-//     'Oxford Blue',
-//     'Shropshire Blue',
-//     'Stichelton',
-//     'Stilton',
-//     'Blue Wensleydale',
-//     'Yorkshire Blue'
-//   ]
-// }
+const mapStateToProp = state => {
+  return {
+    cheeses: state.cheeses
+  };
+};
+
+export default connect(mapStateToProp)(CheeseList);
